@@ -1,0 +1,36 @@
+/* @override 
+	http://staging.johnaugust.com/wp-content/plugins/wp-scrippets/scrippet_shadow.css
+	http://staging.johnaugust.com/wp-content/plugins/wp-scrippets/scrippet_shadow.css?v2.0
+*/
+
+div.scrippet {
+	-webkit-box-shadow: 
+		0 0 3px #8f8f8f,
+		inset -2px -2px 2px white
+		;
+	-moz-box-shadow: 
+		0 0 3px #8f8f8f,
+		inset -2px -2px 2px white
+		;
+	box-shadow: 
+		0 0 3px #8f8f8f,
+		inset -2px -2px 2px white
+		;
+	border: none;
+	background-image: 
+	-webkit-gradient(
+		linear, 
+		100% 100%, 
+		50% 0%, 
+		from(#f9f9f9), to(white));
+	background-image:
+		-moz-linear-gradient(
+		    left top,
+		    rgb(255,255,255) 29%,
+		    rgb(247,247,247) 100%
+		);
+}
+
+.no-boxshadow div.scrippet {
+	border: 1px solid #d2d2d2;
+}
