@@ -1,11 +1,9 @@
 <?php
 /****************************************************************************
 Plugin Name: WP Scrippets
-Plugin URI: http://scrippets.org
 Description: Modifies screenplay format text for inclusion in web pages. Based on the scrippet concept and original code by <a href="http://johnaugust.com">John August</a>.
-Author: Nima Yousefi
-Author URI: http://equinox-of-insanity.com
-Version: 1.5.1
+Author: Nima Yousefi, Gus Nordhielm
+Version: 1.5.2
 
 This plugin uses the function found in the file "scrippetize.php" to create the
 formatted HTML.
@@ -27,13 +25,13 @@ add_filter('comment_text', 'build_scrippet', 1, 1);
 add_action('wp_head', 'add_scrippet_css');
 add_action('admin_menu', 'add_scrippets_admin_panel');
 
-function build_scrippet($text) { 
+function build_scrippet($text) {
     $settings    = get_option('scrippet_options');
     $wrap_before = '';
     $wrap_after  = '';
 
     //if($settings['border_style'] == 'Drop Shadow') {
-        //$wrap_before = "<div class=\"scrippet-shadow\">\n<div class=\"inner-shadow\">\n"; 
+        //$wrap_before = "<div class=\"scrippet-shadow\">\n<div class=\"inner-shadow\">\n";
         //$wrap_after  = "</div>\n</div>\n";
     //}
     $text = scrippetize($text, $wrap_before, $wrap_after);  // see scrippetize.php for details
@@ -51,7 +49,7 @@ if(!get_option('scrippet_options')) {
 function add_scrippet_css($u) {
     // add the base CSS
     echo '<link rel="stylesheet" type="text/css" href="' . WP_PLUGIN_URL . '/wp-scrippets/scrippets.css?v2.0">' . "\n";
-    
+
     // now modify CSS if necessary
 
     $settings = get_option('scrippet_options');
@@ -61,13 +59,13 @@ function add_scrippet_css($u) {
     echo "\twidth: {$settings['width']}px;\n";
     echo "\tbackground-color: " . $settings['bg_color'] . ";\n";
     echo "\tcolor: {$settings['text_color']};\n";
-    
+
     if($settings['alignment'] == 'Center' && $settings['border_style'] != 'Drop Shadow') {
         echo "\tmargin: 0 auto 16px auto !important;";
     }
-    
+
     echo "}\n</style>\n\n";   // close the div.scrippet CSS block
-    */    
+    */
     if($settings['border_style'] == 'Drop Shadow') {
         echo '<link rel="stylesheet" type="text/css" href="' . WP_PLUGIN_URL . '/wp-scrippets/scrippet_shadow.css?v2.0">' . "\n";
         /*
@@ -77,12 +75,12 @@ function add_scrippet_css($u) {
     	echo "\twidth: {$settings['width']}px;\n";
     	echo "\tbackground-color: " . $settings['bg_color'] . ";\n";
     	echo "\tcolor: {$settings['text_color']};\n";
-        
+
         if($settings['alignment'] == 'Center') {
             echo "\tmargin-left: auto !important;\n\tmargin-right: auto !important;\n";
         }
         echo "}\n</style>\n\n";   // close the div.scrippet CSS block
-*/    	
+*/
     }
 
     //echo "<!--[if IE]>\n<style>";
@@ -97,7 +95,7 @@ function add_scrippet_css($u) {
     if (stristr($_SERVER['HTTP_USER_AGENT'], 'Windows')) {   // need to modify the font to work better on Windows
         echo "<style>\n\t.scrippet p { font-family: 'Courier New', monospace !important; }\n</style>\n\n";
     }
-    
+
 }
 
 function scrippets_options_panel() {
@@ -114,7 +112,7 @@ function scrippets_options_panel() {
             form.border_style.selectedIndex = '<?php echo $default_options['border_style'] ?>';
             form.alignment.selectedIndex = '<?php echo $default_options['alignment'] ?>';
         }
-        
+
         // set the values for the colorselector
         var CROSSHAIRS_LOCATION = '<?php echo $cs_home; ?>/crosshairs.png';
         var HUE_SLIDER_LOCATION = '<?php echo $cs_home; ?>/h.png';
@@ -149,7 +147,7 @@ function scrippets_options_panel() {
                         </select> Default: <b><i><?php echo $default_options['alignment'] ?></i></b><br/>
                         The alignment of the Scrippet box on the page. </td>
                 </tr>
-                
+
                 <tr align="top">
                     <th scope="row"><label for="bg_color">Background color</label></th>
                     <td><input type="text" name="bg_color" value="<?php echo $settings['bg_color']; ?>" id="bg_color" class="color" size="8"/><br/>
@@ -158,7 +156,7 @@ function scrippets_options_panel() {
                     <td><input type="text" name="text_color" value="<?php echo $settings['text_color'] ?>" id="text_color" class="color" size="8"/><br/>
                         Default: <b><i><?php echo $default_options['text_color'] ?></i></b></td>
                 </tr>
-                
+
             </table>
 
             <p class="submit">
@@ -182,11 +180,11 @@ function scrippets_save_options() {
     $scrippet_options['text_color']     = $_POST['text_color'];
     $scrippet_options['border_style']   = $_POST['border_style'];
     $scrippet_options['alignment']      = $_POST['alignment'];
-    
+
     update_option('scrippet_options', $scrippet_options);
 }
 
-if ($_POST['action'] == 'save_options'){
+if (isset($_POST['action']) && $_POST['action'] == 'save_options'){
 	scrippets_save_options();
 }
 
